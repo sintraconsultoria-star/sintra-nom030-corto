@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Marco Normativo NOM-030 | SINTRA</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#D94F2B;--lt:#F7F5F3;--bd:#E2DDD8;--wh:#fff;
+  --dk:#2C2C2A;--mid:#5A5A5A;--muted:#888780;
+  --green:#3B6D11;--gbg:#EAF3DE;--gbr:#97C459;
+  --red:#A32D2D;--rbg:#FCEBEB;--rbr:#F09595;
+  --amb:#BA7517;--abg:#FAEEDA;--abr:#FAC775;
+  --blue:#185FA5;--bbg:#EBF4FF;--bbr:#90C3F5;
+}
+html,body{font-family:-apple-system,sans-serif;background:#F0EDE8;color:var(--dk);font-size:15px;min-height:100vh}
+
+/* HEADER */
+.hdr{background:#fff;border-bottom:3px solid var(--or);padding:0 16px;display:flex;align-items:center;height:54px;position:sticky;top:0;z-index:500;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-box svg{width:18px;height:18px}
+.logo-name{font-size:14px;font-weight:700;color:var(--mid);letter-spacing:.5px}
+.logo-sub{font-size:10px;color:var(--muted)}
+.hdr-sep{width:1px;height:26px;background:var(--bd);margin:0 6px}
+.hdr-ttl{font-size:11px;color:var(--mid);line-height:1.3}
+.hdr-ttl b{display:block;font-size:12px;color:var(--dk)}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:6px}
+.online-pill{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);background:var(--lt);padding:3px 8px;border-radius:20px}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.online-dot.off{background:var(--red)}
+
+/* BOTTOM NAV BAR con botones */
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--or);display:flex;z-index:500;box-shadow:0 -2px 10px rgba(0,0,0,.1);padding:8px 12px;gap:8px}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 8px;cursor:pointer;border:2px solid var(--bd);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;-webkit-tap-highlight-color:rgba(217,79,43,.2);min-height:44px;gap:5px}
+.tab.active{background:var(--or);color:#fff;border-color:var(--or)}
+.tab-icon{font-size:16px;line-height:1}
+.tab-lbl{font-size:12px;font-weight:600}
+.tab-dot{display:none}
+
+/* SAVE BAR */
+.savebar{position:fixed;bottom:65px;left:0;right:0;background:var(--dk);padding:7px 14px;display:flex;align-items:center;gap:8px;z-index:400}
+.savebar-info{flex:1;min-width:0}
+.savebar-info b{display:block;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.savebar-info span{font-size:10px;color:#aaa}
+.savebar-btn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;border:none;-webkit-tap-highlight-color:rgba(255,255,255,.2)}
+.savebar-btn.green{background:var(--green);color:#fff}
+.savebar-btn.gray{background:#444;color:#fff}
+
+/* CONTENT */
+.wrap{max-width:900px;margin:0 auto;padding:14px 14px 130px}
+.screen{display:none}
+.screen.on{display:block}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:12px}
+.card-t{font-size:12px;font-weight:600;color:var(--dk);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.note{font-size:11px;color:var(--muted);padding:7px 10px;background:var(--lt);border-left:3px solid var(--or);border-radius:4px;margin-bottom:12px;line-height:1.6}
+
+/* FORM */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.fg1{grid-template-columns:1fr}
+.fg3{grid-template-columns:1fr 1fr 1fr}
+.f{display:flex;flex-direction:column;gap:4px}
+.f label{font-size:11px;color:var(--mid);font-weight:500}
+.f input,.f textarea,.f select{font-size:16px;padding:9px 10px;border:1px solid var(--bd);border-radius:6px;color:var(--dk);background:#fff;width:100%;font-family:inherit}
+.f textarea{resize:vertical;min-height:72px}
+.f input:focus,.f textarea:focus{outline:2px solid var(--or);outline-offset:1px}
+
+/* NOM TOGGLES */
+.cat-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--or);padding:8px 0 4px;border-bottom:1px solid var(--bd);margin-bottom:6px;margin-top:14px}
+.cat-t:first-child{margin-top:0}
+.ng{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}
+.ntog{display:flex;gap:8px;align-items:flex-start;padding:10px;border:2px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer;-webkit-tap-highlight-color:rgba(217,79,43,.15)}
+.ntog.on{border-color:var(--or);background:#FDF5F2}
+.nchk{width:18px;height:18px;border-radius:4px;border:2px solid var(--bd);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;background:#fff;font-size:12px;font-weight:700;color:transparent}
+.ntog.on .nchk{background:var(--or);border-color:var(--or);color:#fff}
+.ntog-l{font-size:11px;line-height:1.4}
+.ntog-l b{color:var(--dk);display:block}
+.ntog-l span{color:var(--muted);font-size:10px}
+.ntog-l .nc{color:var(--or);font-weight:600}
+
+/* CHECKLIST */
+.rn-blk{margin-bottom:12px;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.rn-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#FDF5F2;border-bottom:1px solid #EDD5CA;cursor:pointer;-webkit-tap-highlight-color:rgba(217,79,43,.15)}
+.rn-hdr-t{font-size:12px;font-weight:600;color:var(--or)}
+.rn-hdr-s{font-size:10px;color:var(--mid);margin-top:1px}
+.bdg{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
+.bdg.ok{background:var(--gbg);color:var(--green)}
+.bdg.warn{background:var(--rbg);color:var(--red)}
+.bdg.part{background:var(--abg);color:var(--amb)}
+
+.rrow{padding:10px 12px;border-bottom:1px solid #F3F0EB;background:#fff}
+.rrow.shade{background:#FAFAFA}
+.rrow:last-child{border-bottom:none}
+.rrow-top{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.rref{font-size:10px;color:var(--muted);font-family:monospace;white-space:nowrap;padding-top:2px;min-width:38px;flex-shrink:0}
+.rtxt{font-size:12px;color:var(--dk);line-height:1.5;flex:1}
+.rvig{font-size:10px;color:var(--muted);background:var(--lt);border:1px solid var(--bd);border-radius:4px;padding:2px 5px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+
+/* RESULT BUTTONS — grandes para touch */
+.rbg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;padding-left:46px}
+.rb{display:inline-flex;align-items:center;justify-content:center;min-width:72px;padding:9px 14px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:2px solid var(--bd);background:#fff;color:var(--muted);min-height:42px;-webkit-tap-highlight-color:rgba(0,0,0,.1)}
+.rb.si-on{background:var(--gbg);color:var(--green);border-color:var(--gbr)}
+.rb.par-on{background:var(--abg);color:var(--amb);border-color:var(--abr)}
+.rb.no-on{background:var(--rbg);color:var(--red);border-color:var(--rbr)}
+.rb.na-on{background:#F1EFE8;color:var(--muted);border-color:#D3D1C7}
+
+/* 3 CAMPOS SIEMPRE VISIBLES */
+.campos-wrap{padding-left:46px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px}
+.campo-grp{display:flex;flex-direction:column;gap:3px}
+.campo-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.campo-lbl.ev{color:var(--blue)}
+.campo-lbl.obs{color:var(--mid)}
+.campo-lbl.med{color:var(--amb)}
+.campo-ta{width:100%;font-size:14px;padding:7px 8px;border-radius:6px;color:var(--dk);font-family:inherit;resize:vertical;min-height:54px;border:1px solid var(--bd);background:var(--lt)}
+.campo-ta.ev-f{border-color:var(--bbr);background:var(--bbg)}
+.campo-ta.med-f{border-color:var(--abr);background:#FEFBF5}
+.campo-ta:focus{outline:2px solid var(--or);outline-offset:1px}
+
+/* OBS GENERALES DE NORMA */
+.nom-obs-wrap{padding:12px;background:#F0EDE8;border-top:2px solid var(--or)}
+.nom-obs-title{font-size:11px;font-weight:700;color:var(--or);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.nom-obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nom-obs-grp{display:flex;flex-direction:column;gap:3px}
+.nom-obs-lbl{font-size:10px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.4px}
+.nom-obs-lbl.piso{color:var(--blue)}
+.nom-obs-ta{width:100%;font-size:14px;padding:8px 10px;border-radius:6px;color:var(--dk);font-family:inherit;resize:vertical;min-height:72px;border:1px solid var(--bd);background:#fff}
+.nom-obs-ta.piso-f{border-color:var(--bbr);background:var(--bbg)}
+.nom-obs-ta:focus{outline:2px solid var(--or);outline-offset:1px}
+
+/* RESULTADOS */
+.res-top{background:var(--dk);color:#fff;padding:14px 16px;border-radius:8px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.res-pct{font-size:36px;font-weight:700}
+.res-info{font-size:10px;color:#aaa}
+.res-info b{display:block;font-size:11px;color:#ccc;margin-bottom:2px}
+.pills{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+.pill{text-align:center;padding:6px 10px;border-radius:6px;min-width:48px}
+.pill .pv{font-size:17px;font-weight:700}
+.pill .pl{font-size:9px}
+.pill.si{background:var(--gbg);color:var(--green)}
+.pill.par{background:var(--abg);color:var(--amb)}
+.pill.no{background:var(--rbg);color:var(--red)}
+.pill.na{background:#F1EFE8;color:var(--muted)}
+.grp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--or);padding:8px 0 4px;border-bottom:1px solid var(--bd);margin:8px 0 6px}
+table.rt{width:100%;border-collapse:collapse;font-size:11px}
+table.rt th{background:var(--dk);color:#fff;padding:5px 7px;text-align:center;font-size:10px}
+table.rt th.tl{text-align:left}
+table.rt td{padding:4px 7px;border-bottom:.5px solid var(--bd)}
+table.rt tr:nth-child(even) td{background:var(--lt)}
+.tc{text-align:center}
+.tpct{text-align:center;font-weight:700}
+.trow-tot td{background:var(--dk)!important;color:#fff!important;font-weight:700}
+.ac-r{padding:8px 10px;border-radius:6px;border:1px solid var(--bd);margin-bottom:5px;background:var(--lt)}
+
+/* EXPORT BUTTONS en resultados */
+.exp-btns{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.exp-btn{display:inline-flex;align-items:center;gap:5px;padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;-webkit-tap-highlight-color:rgba(255,255,255,.2)}
+.exp-btn.excel{background:var(--dk);color:#fff}
+.exp-btn.sheets{background:var(--green);color:#fff}
+.exp-btn.print{background:var(--mid);color:#fff}
+.exp-btn.nuevo{background:var(--or);color:#fff}
+
+.sh-st{display:none;padding:9px 12px;border-radius:6px;font-size:12px;margin-top:8px}
+.sh-st.on{display:block}
+.sh-st.ok{background:var(--gbg);color:var(--green);border:1px solid var(--gbr)}
+.sh-st.err{background:var(--rbg);color:var(--red);border:1px solid var(--rbr)}
+.sh-st.loading{background:var(--abg);color:var(--amb);border:1px solid var(--abr)}
+
+footer{text-align:center;padding:10px;font-size:10px;color:var(--muted)}
+@media(max-width:640px){
+  .fg,.fg3{grid-template-columns:1fr}
+  .ng{grid-template-columns:1fr 1fr}
+  .pills{margin-left:0}
+  .nom-obs-grid{grid-template-columns:1fr}
+  .campos-wrap{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3C8 3 5 6 5 10c0 2.5 1.5 4.5 3 6l4 4 4-4c1.5-1.5 3-3.5 3-6 0-4-3-7-7-7z"/>
+      <circle cx="12" cy="10" r="2.5"/>
+    </svg>
+  </div>
+  <div><div class="logo-name">SINTRA</div><div class="logo-sub">Consultoría</div></div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-ttl"><b>Marco Normativo NOM-030-STPS-2009</b>Diagnóstico de cumplimiento</div>
+  <div class="hdr-r">
+    <div class="online-pill"><div class="online-dot" id="odot"></div><span id="olbl">...</span></div>
+  </div>
+</header>
+
+<!-- SAVE BAR -->
+<div class="savebar">
+  <div class="savebar-info">
+    <b id="sbEmp">Marco Normativo NOM-030</b>
+    <span id="sbSt">Sin datos guardados</span>
+  </div>
+  <span class="savebar-btn green" id="btnSheets">☁ Sheets</span>
+  <span class="savebar-btn gray" id="btnExcelBar">⬇ Excel</span>
+</div>
+
+<div class="wrap">
+
+  <!-- PANTALLA 1: EMPRESA -->
+  <div class="screen on" id="s0">
+    <div class="card">
+      <div class="card-t">🏭 Datos del centro de trabajo</div>
+      <div class="fg">
+        <div class="f"><label>Razón social *</label><input id="e_razon" placeholder="Nombre de la empresa" autocomplete="organization"></div>
+        <div class="f"><label>RFC *</label><input id="e_rfc" placeholder="RFC000000AAA" maxlength="13"></div>
+      </div>
+      <div class="fg fg3">
+        <div class="f"><label>Registro patronal</label><input id="e_regpat" placeholder="Y12345678910"></div>
+        <div class="f"><label>Giro o actividad *</label><input id="e_giro" placeholder="Manufactura..."></div>
+        <div class="f"><label>No. trabajadores *</label><input type="number" id="e_num" placeholder="0" min="1"></div>
+      </div>
+      <div class="fg fg1">
+        <div class="f"><label>Domicilio *</label><input id="e_dom" placeholder="Calle, número, colonia, municipio, estado"></div>
+      </div>
+      <div class="fg fg3">
+        <div class="f"><label>Teléfono</label><input id="e_tel" placeholder="55 1234 5678" type="tel"></div>
+        <div class="f"><label>Turnos</label><input id="e_turnos" placeholder="Ej. 6:00-14:00 hrs"></div>
+        <div class="f"><label>Fecha diagnóstico *</label><input type="date" id="e_fecha"></div>
+      </div>
+      <div class="fg">
+        <div class="f"><label>Responsable del CT *</label><input id="e_resp_ct" placeholder="Nombre completo"></div>
+        <div class="f"><label>Responsable de SST</label><input id="e_resp_sh" placeholder="Nombre completo"></div>
+      </div>
+      <div class="fg">
+        <div class="f"><label>Representante legal *</label><input id="e_repr" placeholder="Nombre completo"></div>
+        <div class="f"><label>Consultor SINTRA *</label><input id="e_consultor" placeholder="Nombre del consultor"></div>
+      </div>
+      <div class="fg fg1" style="margin-top:4px">
+        <div class="f"><label>Observaciones generales del centro de trabajo</label>
+          <textarea id="e_obs" placeholder="Descripción del proceso productivo, condiciones generales, comentarios relevantes del diagnóstico..."></textarea>
+        </div>
+      </div>
+    </div>
+    <footer>Toca la pestaña <b>Normas</b> en la barra inferior para continuar</footer>
+  </div>
+
+  <!-- PANTALLA 2: NORMAS -->
+  <div class="screen" id="s1">
+    <div class="card">
+      <div class="card-t">📋 Selección de normas aplicables</div>
+      <div class="note">Toca cada norma para seleccionar las que aplican al centro de trabajo. Por defecto no hay ninguna seleccionada.</div>
+      <div id="normasGrid"></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 3: EVALUACIÓN -->
+  <div class="screen" id="s2">
+    <div class="card">
+      <div class="card-t">✅ Evaluación de requisitos</div>
+      <div class="note">
+        Toca <b>SI / PARCIAL / NO / NA</b> para cada aspecto.<br>
+        <span style="color:var(--blue);font-weight:600">Evidencias documentales</span> ·
+        <span style="color:var(--mid);font-weight:600">Observaciones</span> ·
+        <span style="color:var(--amb);font-weight:600">Medidas de control</span> — siempre disponibles.<br>
+        Al final de cada norma: <b>Obs. generales</b> y <b>Obs. levantamiento en piso</b>.
+      </div>
+      <div id="reqArea"></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 4: RESULTADOS -->
+  <div class="screen" id="s3">
+    <div class="card">
+      <div class="card-t">📊 Resultados del diagnóstico</div>
+      <div class="exp-btns">
+        <span class="exp-btn excel" id="btnExcel">⬇ Descargar Excel</span>
+        <span class="exp-btn print" id="btnPrint">🖨 Imprimir</span>
+        <span class="exp-btn nuevo" id="btnNuevo">🔄 Nuevo diagnóstico</span>
+      </div>
+      <div id="resArea"></div>
+      <div class="sh-st" id="shSt"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV BAR — botones -->
+<nav class="tabbar">
+  <span class="tab active" id="tab0">
+    <span class="tab-icon">🏭</span>
+    <span class="tab-lbl">Empresa</span>
+  </span>
+  <span class="tab" id="tab1">
+    <span class="tab-icon">📋</span>
+    <span class="tab-lbl">Normas</span>
+  </span>
+  <span class="tab" id="tab2">
+    <span class="tab-icon">✅</span>
+    <span class="tab-lbl">Evaluación</span>
+  </span>
+  <span class="tab" id="tab3">
+    <span class="tab-icon">📊</span>
+    <span class="tab-lbl">Resultados</span>
+  </span>
+</nav>
+
+<script>
+const APPS_URL = "https://script.google.com/macros/s/AKfycbxd05kQFqGGu92ta5sIOehsamZeowKkP0XQ3fZHkNrmbw6wTmedDkMRM_5JKAiQIsR8iQ/exec";
+
+const CATS = [
+  {cat:"Seguridad", noms:[
+    {id:"NOM-001",cod:"NOM-001-STPS-2008",nom:"Edificios, locales e instalaciones",reqs:[
+      {ref:"1.1",txt:"Letreros en cada área / conservación de las áreas",vig:"Semestre"},
+      {ref:"1.2",txt:"Revisión de condiciones y actos inseguros en las áreas",vig:"Trimestre"},
+      {ref:"1.3",txt:"Delimitación de los pasillos de todas las áreas",vig:"Anual"},
+      {ref:"1.4",txt:"Medición de escaleras fijas, escaleras móviles y escalas",vig:"Anual"},
+      {ref:"1.5",txt:"Reporte de condiciones de seguridad: Techos, Paredes, pisos, rampas",vig:"Anual"},
+      {ref:"1.6",txt:"Programa de mantenimiento de instalaciones (edificios, techos, pisos, rampas)",vig:"Anual"},
+      {ref:"1.7",txt:"Procedimiento de revisión de condiciones y actos inseguros en áreas",vig:"Trimestral"},
+      {ref:"1.8",txt:"Registro de inspección de escaleras fijas, móviles y escalas",vig:"Anual"},
+      {ref:"1.9",txt:"Constancia estructural del inmueble",vig:"Cada cambio / solicitud autoridad"},
+      {ref:"1.10",txt:"Capacitación, con evidencia DC3 — Edificios e instalaciones",vig:"Anual"},
+    ]},
+    {id:"NOM-002",cod:"NOM-002-STPS-2010",nom:"Prevención y protección contra incendios",reqs:[
+      {ref:"2.1",txt:"Estudio de clasificación del riesgo de incendio del centro de trabajo",vig:"2 años"},
+      {ref:"2.2",txt:"Plan de prevención y atención de emergencias por incendio",vig:"Anual"},
+      {ref:"2.3",txt:"Programa anual de revisión y mantenimiento de extintores",vig:"Anual"},
+      {ref:"2.4",txt:"Carta responsiva del proveedor de mantenimiento de extintores",vig:"Anual"},
+      {ref:"2.5",txt:"Croquis / plano de Rutas de evacuación, lugares seguros, puntos de reunión",vig:"Anual"},
+      {ref:"2.6",txt:"Lay out de señalización y ubicación de extintores, detectores de humo",vig:"Anual"},
+      {ref:"2.7",txt:"Revisión de extintores, detectores de humo, esferas",vig:"Mensual"},
+      {ref:"2.8",txt:"EPP a integrantes de brigadas contra incendio",vig:"Según fichas técnicas"},
+      {ref:"2.9",txt:"Trípticos con instrucciones de seguridad para contratistas / proveedores",vig:"Cada ingreso"},
+      {ref:"2.10",txt:"Registro de simulacros (mínimo 3 al año)",vig:"Anual"},
+      {ref:"2.11",txt:"Lista de integrantes de la brigada contra incendio",vig:"Actualización continua"},
+      {ref:"2.12",txt:"Constancia de dotación de EPP a brigadistas contra incendio",vig:"Cada dotación"},
+      {ref:"2.13",txt:"Capacitación, con evidencia DC3 — Prevención de incendios y brigadas",vig:"Anual"},
+    ]},
+    {id:"NOM-004",cod:"NOM-004-STPS-1999",nom:"Sistemas y dispositivos de seguridad en maquinaria",reqs:[
+      {ref:"4.1",txt:"Análisis de riesgo por maquinaria (guardas y dispositivos requeridos)",vig:"Anual"},
+      {ref:"4.2",txt:"Inventario de maquinaria y equipo con estatus de guardas y dispositivos",vig:"Anual"},
+      {ref:"4.3",txt:"Programa de mantenimiento preventivo y correctivo de maquinaria",vig:"Anual"},
+      {ref:"4.4",txt:"Procedimiento de operación segura por tipo de maquinaria",vig:"Cada nueva máquina"},
+      {ref:"4.5",txt:"Procedimiento de Bloqueo, Etiquetado y Vaciado de Energías (LOTO)",vig:"Cada nueva máquina"},
+      {ref:"4.6",txt:"Registro de aplicación del procedimiento LOTO por evento",vig:"Por evento"},
+      {ref:"4.7",txt:"Delimitación de equipo y maquinaria",vig:"Anual"},
+      {ref:"4.8",txt:"Capacitación, con evidencia DC3 — Operación segura de maquinaria y LOTO",vig:"Anual"},
+    ]},
+    {id:"NOM-005",cod:"NOM-005-STPS-1998",nom:"Manejo, transporte y almacenamiento de sustancias peligrosas",reqs:[
+      {ref:"5.1",txt:"Inventario de sustancias químicas peligrosas en el centro de trabajo",vig:"Anual / nueva sustancia"},
+      {ref:"5.2",txt:"Análisis de riesgo por área / almacén con sustancias químicas",vig:"Anual / nueva sustancia"},
+      {ref:"5.3",txt:"Análisis de incompatibilidad de sustancias químicas peligrosas",vig:"Anual / nueva sustancia"},
+      {ref:"5.4",txt:"Hojas de Datos de Seguridad (HDS) de todas las sustancias — actualizadas",vig:"Anual / nueva sustancia"},
+      {ref:"5.5",txt:"Procedimiento de manejo, transporte y almacenamiento de sustancias peligrosas",vig:"Anual"},
+      {ref:"5.6",txt:"Procedimiento de atención a derrames y emergencias químicas",vig:"Anual"},
+      {ref:"5.7",txt:"Permiso de trabajo para actividades con sustancias peligrosas de alto riesgo",vig:"Por evento"},
+      {ref:"5.8",txt:"Registro de revisión mensual de lavaojos y regaderas de emergencia",vig:"Mensual"},
+      {ref:"5.9",txt:"Registro de revisión mensual de kits de control de derrames",vig:"Mensual"},
+      {ref:"5.10",txt:"Manual de primeros auxilios en caso de exposición a sustancias químicas",vig:"Anual"},
+      {ref:"5.11",txt:"Constancia de dotación y revisión del botiquín de emergencia",vig:"Mensual"},
+      {ref:"5.12",txt:"Capacitación, con evidencia DC3 — Manejo de sustancias peligrosas y HDS",vig:"Anual"},
+    ]},
+    {id:"NOM-006",cod:"NOM-006-STPS-2023",nom:"Almacenamiento y manejo de materiales con maquinaria",reqs:[
+      {ref:"6.1",txt:"Procedimiento de operación segura de montacargas",vig:"Anual"},
+      {ref:"6.2",txt:"Formato de inspección preoperacional diaria de montacargas",vig:"Diario"},
+      {ref:"6.3",txt:"Formato de inspección diaria de patín hidráulico",vig:"Diario"},
+      {ref:"6.4",txt:"Formato de inspección semanal de diablitos, carritos y plataformas",vig:"Semanal"},
+      {ref:"6.5",txt:"Formato de inspección mensual de racks y estantería",vig:"Mensual"},
+      {ref:"6.6",txt:"Procedimiento de manejo manual y mecanizado de materiales (límites de carga)",vig:"Anual"},
+      {ref:"6.7",txt:"Revisión de señalamientos, pasillos, delimitación de racks",vig:"Semanal"},
+      {ref:"6.8",txt:"Registros de metodología 5'S con auditorías internas",vig:"Mensual"},
+      {ref:"6.9",txt:"Exámenes médicos al Personal Ocupacionalmente Expuesto (POE)",vig:"Ingreso / Periódicos"},
+      {ref:"6.10",txt:"Capacitación, con evidencia DC3 — Manejo seguro de materiales y equipos",vig:"Anual"},
+    ]},
+    {id:"NOM-009",cod:"NOM-009-STPS-2011",nom:"Trabajos en altura",reqs:[
+      {ref:"9.1",txt:"Análisis de actividades que implican trabajos en altura",vig:"Anual"},
+      {ref:"9.2",txt:"Procedimiento de seguridad para trabajos en altura (inspección y EPP)",vig:"Anual"},
+      {ref:"9.3",txt:"Plan de atención a emergencias para trabajos en altura (rescate)",vig:"Anual"},
+      {ref:"9.4",txt:"Permiso de trabajo en altura (por evento)",vig:"Por evento"},
+      {ref:"9.5",txt:"Identificación y evaluación de peligros y riesgos (IPER) por actividad en altura",vig:"Por evento"},
+      {ref:"9.6",txt:"Formato de inspección semanal de escaleras (portátiles y fijas)",vig:"Semanal"},
+      {ref:"9.7",txt:"Exámenes médicos del POE en trabajos en altura",vig:"Ingreso / Periódico"},
+      {ref:"9.8",txt:"Capacitación, con evidencia DC3 — Trabajos en altura y uso de EPP",vig:"Anual"},
+    ]},
+    {id:"NOM-020",cod:"NOM-020-STPS-2011",nom:"Recipientes sujetos a presión y calderas",reqs:[
+      {ref:"20.1",txt:"Inventario y expediente técnico de recipientes sujetos a presión (RSP) y calderas",vig:"Anual / nuevo equipo"},
+      {ref:"20.2",txt:"Determinación de categoría de los RSP según la norma",vig:"Anual"},
+      {ref:"20.3",txt:"Procedimiento de operación segura de RSP y calderas",vig:"Anual"},
+      {ref:"20.4",txt:"Procedimiento de mantenimiento preventivo y correctivo de RSP y calderas",vig:"Anual"},
+      {ref:"20.5",txt:"Programa anual de mantenimiento preventivo de RSP y calderas",vig:"Anual"},
+      {ref:"20.6",txt:"Registro de mantenimiento correctivo y preventivo por equipo",vig:"Cada mantenimiento"},
+      {ref:"20.7",txt:"Formato de inspección de condiciones de seguridad de RSP (válvulas, manómetros)",vig:"Semanal"},
+      {ref:"20.8",txt:"Capacitación, con evidencia DC3 — Operación segura de RSP y calderas",vig:"Anual"},
+    ]},
+    {id:"NOM-022",cod:"NOM-022-STPS-2015",nom:"Electricidad estática",reqs:[
+      {ref:"22.1",txt:"Inventario de maquinaria, equipo y áreas con riesgo de electricidad estática",vig:"Anual / nuevo equipo"},
+      {ref:"22.2",txt:"Procedimiento de instalación, revisión y mantenimiento de puestas a tierra",vig:"Anual"},
+      {ref:"22.3",txt:"Informe de medición de resistencia de la puesta a tierra (PAT) — especialista",vig:"Anual"},
+      {ref:"22.4",txt:"Registro de mantenimiento correctivo a elementos de puesta a tierra",vig:"Cada intervención"},
+      {ref:"22.5",txt:"Capacitación, con evidencia DC3 — Electricidad estática y medidas preventivas",vig:"Anual"},
+    ]},
+    {id:"NOM-027",cod:"NOM-027-STPS-2008",nom:"Soldadura y corte",reqs:[
+      {ref:"27.1",txt:"Análisis de riesgos potenciales por actividades de soldadura y corte",vig:"Anual"},
+      {ref:"27.2",txt:"Programa de seguridad para las actividades de soldadura y corte",vig:"Anual"},
+      {ref:"27.3",txt:"Procedimiento de seguridad para soldadura y corte (ventilación y EPP)",vig:"Anual"},
+      {ref:"27.4",txt:"Permiso de trabajo para soldadura y corte (trabajo en caliente)",vig:"Por evento"},
+      {ref:"27.5",txt:"Identificación y evaluación de peligros y riesgos (IPER) por actividad",vig:"Por evento"},
+      {ref:"27.6",txt:"Formato de inspección de equipos de corte y soldadura antes de cada uso",vig:"Por evento"},
+      {ref:"27.7",txt:"Exámenes médicos del POE (exposición a humos y radiación UV)",vig:"Ingreso / Periódico"},
+      {ref:"27.8",txt:"Capacitación, con evidencia DC3 — Soldadura y corte seguro",vig:"Anual"},
+    ]},
+    {id:"NOM-029",cod:"NOM-029-STPS-2011",nom:"Mantenimiento de instalaciones eléctricas",reqs:[
+      {ref:"29.1",txt:"Diagrama unifilar actualizado de las instalaciones eléctricas",vig:"Cada modificación"},
+      {ref:"29.2",txt:"Programa anual de mantenimiento preventivo de instalaciones eléctricas",vig:"Anual"},
+      {ref:"29.3",txt:"Procedimiento de seguridad e higiene para mantenimiento eléctrico",vig:"Anual"},
+      {ref:"29.4",txt:"Procedimiento de Bloqueo, Etiquetado y Vaciado de Energías — LOTO (eléctrico)",vig:"Anual"},
+      {ref:"29.5",txt:"Permiso de trabajo para mantenimiento de instalaciones eléctricas",vig:"Por evento"},
+      {ref:"29.6",txt:"Identificación y evaluación de peligros y riesgos (IPER) por actividad eléctrica",vig:"Por evento"},
+      {ref:"29.7",txt:"Plan de atención a emergencias por accidente eléctrico",vig:"Anual"},
+      {ref:"29.8",txt:"Registro de mantenimiento preventivo y correctivo de instalaciones eléctricas",vig:"Cada mantenimiento"},
+      {ref:"29.9",txt:"Capacitación, con evidencia DC3 — Mantenimiento eléctrico seguro y LOTO",vig:"Anual"},
+    ]},
+    {id:"NOM-033",cod:"NOM-033-STPS-2015",nom:"Trabajos en espacios confinados",reqs:[
+      {ref:"33.1",txt:"Inventario y análisis de riesgo de todos los espacios confinados",vig:"Anual"},
+      {ref:"33.2",txt:"Procedimiento de entrada y trabajo seguro en espacios confinados",vig:"Anual"},
+      {ref:"33.3",txt:"Plan de atención a emergencias y rescate en espacios confinados",vig:"Anual"},
+      {ref:"33.4",txt:"Permiso de entrada y trabajo en espacios confinados (por evento)",vig:"Por evento"},
+      {ref:"33.5",txt:"Identificación y evaluación de peligros y riesgos (IPER) antes de cada entrada",vig:"Semanal / Por evento"},
+      {ref:"33.6",txt:"Registro de medición de atmósfera (O2, gases tóxicos y explosivos) antes de entrada",vig:"Por evento"},
+      {ref:"33.7",txt:"Capacitación, con evidencia DC3 — Trabajos en espacios confinados",vig:"Anual"},
+    ]},
+    {id:"NOM-034",cod:"NOM-034-STPS-2016",nom:"Trabajadores con discapacidad",reqs:[
+      {ref:"34.1",txt:"Análisis de compatibilidad de puestos de trabajo para personas con discapacidad",vig:"Cada incorporación"},
+      {ref:"34.2",txt:"Programa de adecuaciones de accesibilidad para trabajadores con discapacidad",vig:"Anual"},
+      {ref:"34.3",txt:"Plano / croquis de señalizaciones específicas para trabajadores con discapacidad",vig:"Anual"},
+      {ref:"34.4",txt:"Capacitación, con evidencia DC3 — Inclusión y condiciones para personas con discapacidad",vig:"Anual"},
+    ]},
+  ]},
+  {cat:"Salud", noms:[
+    {id:"NOM-010",cod:"NOM-010-STPS-2001",nom:"Agentes químicos contaminantes del ambiente laboral",reqs:[
+      {ref:"10.1",txt:"Reconocimiento e identificación de agentes contaminantes por área de trabajo",vig:"5 años"},
+      {ref:"10.2",txt:"Evaluación cuantitativa de la exposición a agentes químicos por puesto y área",vig:"Según riesgo del agente"},
+      {ref:"10.3",txt:"Programa de vigilancia de la salud — exposición a contaminantes químicos",vig:"Anual"},
+      {ref:"10.4",txt:"Exámenes médicos del POE expuesto a agentes químicos (ingreso y periódicos)",vig:"Ingreso / Periódico"},
+      {ref:"10.5",txt:"Capacitación, con evidencia DC3 — Riesgos por agentes químicos y medidas de control",vig:"Anual"},
+    ]},
+    {id:"NOM-011",cod:"NOM-011-STPS-2001",nom:"Ruido",reqs:[
+      {ref:"11.1",txt:"Evaluación de niveles de ruido por área y puesto de trabajo (sonometría / dosimetría)",vig:"2 años"},
+      {ref:"11.2",txt:"Mapa de ruido del centro de trabajo con niveles por zona",vig:"2 años"},
+      {ref:"11.3",txt:"Programa de control de ruido (medidas técnicas, administrativas y EPP)",vig:"Anual"},
+      {ref:"11.4",txt:"Programa de vigilancia médica — audiometría para POE expuesto a ruido",vig:"Anual"},
+      {ref:"11.5",txt:"Registro de audiometrías del POE expuesto (ingreso, seguimiento, egreso)",vig:"Ingreso / Periódico"},
+      {ref:"11.6",txt:"Capacitación, con evidencia DC3 — Efectos del ruido y uso de protección auditiva",vig:"Anual"},
+    ]},
+    {id:"NOM-012",cod:"NOM-012-STPS-2012",nom:"Radiación ionizante",reqs:[
+      {ref:"12.1",txt:"Análisis de riesgo por fuente de radiación ionizante (inventario y caracterización)",vig:"2 años"},
+      {ref:"12.2",txt:"Manual de seguridad y protección radiológica del centro de trabajo",vig:"Anual"},
+      {ref:"12.3",txt:"Directorio actualizado de órganos reguladores competentes (CNSNS, SS, SENER)",vig:"Anual"},
+      {ref:"12.4",txt:"Plan de atención a emergencias radiológicas",vig:"Anual"},
+      {ref:"12.5",txt:"Programa de dosimetría personal para el POE (dosímetros individuales)",vig:"Continuo"},
+      {ref:"12.6",txt:"Registros de lecturas de dosímetros individuales del POE",vig:"Mensual / trimestral"},
+      {ref:"12.7",txt:"Programa de vigilancia médica del POE expuesto a radiación ionizante",vig:"Anual"},
+      {ref:"12.8",txt:"Constancia de dotación de EPP específico para trabajo con radiación ionizante",vig:"Cada dotación"},
+      {ref:"12.9",txt:"Capacitación, con evidencia DC3 — Radiación ionizante, protección y emergencias",vig:"Anual"},
+    ]},
+    {id:"NOM-013",cod:"NOM-013-STPS-1993",nom:"Radiación no ionizante",reqs:[
+      {ref:"13.1",txt:"Inventario y análisis de riesgos de fuentes de radiación no ionizante por área",vig:"2 años"},
+      {ref:"13.2",txt:"Evaluación de niveles de exposición a radiación no ionizante (UV, IR, microondas, láser)",vig:"Anual"},
+      {ref:"13.3",txt:"Programa de medidas preventivas y controles de ingeniería para radiación no ionizante",vig:"Anual"},
+      {ref:"13.4",txt:"Constancia de dotación de EPP específico (goggles, pantallas de protección)",vig:"Cada dotación"},
+      {ref:"13.5",txt:"Exámenes médicos del POE (oftalmológico, dermatológico)",vig:"Ingreso / Periódico"},
+      {ref:"13.6",txt:"Capacitación, con evidencia DC3 — Radiación no ionizante y medidas de protección",vig:"Anual"},
+    ]},
+    {id:"NOM-015",cod:"NOM-015-STPS-2001",nom:"Condiciones térmicas elevadas o abatidas",reqs:[
+      {ref:"15.1",txt:"Evaluación de condiciones térmicas por área (temperatura, humedad, velocidad del aire)",vig:"2 años"},
+      {ref:"15.2",txt:"Evaluación de los tiempos de exposición y regímenes trabajo-descanso por puesto",vig:"Anual"},
+      {ref:"15.3",txt:"Procedimiento de trabajo seguro en condiciones de calor extremo (hidratación, pausas, señales)",vig:"Anual"},
+      {ref:"15.4",txt:"Procedimiento de trabajo seguro en condiciones de frío extremo (ropa, pausas, calentamiento)",vig:"Anual"},
+      {ref:"15.5",txt:"Programa de acceso a agua potable fresca para trabajadores expuestos a calor",vig:"Anual"},
+      {ref:"15.6",txt:"Programa de vigilancia médica — estrés por calor y frío",vig:"Anual"},
+      {ref:"15.7",txt:"Exámenes médicos del POE expuesto a condiciones térmicas extremas",vig:"Ingreso / Periódico"},
+      {ref:"15.8",txt:"Constancia de dotación de EPP para calor o frío extremo (ropa reflectante, térmica)",vig:"Cada dotación"},
+      {ref:"15.9",txt:"Capacitación, con evidencia DC3 — Estrés térmico, hidratación y señales de alarma",vig:"Anual"},
+    ]},
+    {id:"NOM-024",cod:"NOM-024-STPS-2001",nom:"Vibraciones",reqs:[
+      {ref:"24.1",txt:"Evaluación de vibraciones mano-brazo y cuerpo entero por puesto y área",vig:"2 años"},
+      {ref:"24.2",txt:"Análisis de tiempos de exposición diaria a vibraciones por trabajador",vig:"Anual"},
+      {ref:"24.3",txt:"Programa de rotación y pausas para trabajadores expuestos a vibraciones",vig:"Anual"},
+      {ref:"24.4",txt:"Programa de mantenimiento de herramientas y equipos generadores de vibración",vig:"Anual"},
+      {ref:"24.5",txt:"Constancia de dotación de EPP antivibratorio (guantes, asientos amortiguadores)",vig:"Cada dotación"},
+      {ref:"24.6",txt:"Exámenes médicos del POE (neurológico, osteoarticular, circulatorio)",vig:"Ingreso / Periódico"},
+      {ref:"24.7",txt:"Capacitación, con evidencia DC3 — Efectos de las vibraciones y medidas preventivas",vig:"Anual"},
+    ]},
+    {id:"NOM-025",cod:"NOM-025-STPS-2008",nom:"Iluminación",reqs:[
+      {ref:"25.1",txt:"Evaluación de niveles de iluminación por área y puesto de trabajo (luxometría)",vig:"2 años"},
+      {ref:"25.2",txt:"Programa de mantenimiento y limpieza de luminarias y superficies reflectantes",vig:"Mensual"},
+      {ref:"25.3",txt:"Calendario anual de reemplazo de luminarias y lámparas",vig:"Anual"},
+      {ref:"25.4",txt:"Registro de mantenimiento correctivo de luminarias por área",vig:"Por evento"},
+      {ref:"25.5",txt:"Capacitación, con evidencia DC3 — Impacto de la iluminación en salud y productividad",vig:"Anual"},
+    ]},
+    {id:"NOM-035",cod:"NOM-035-STPS-2018",nom:"Factores de Riesgo Psicosocial",reqs:[
+      {ref:"35.1",txt:"Política de prevención de factores de riesgo psicosocial y entorno organizacional favorable",vig:"2 años"},
+      {ref:"35.2",txt:"Cuestionario de identificación de factores de riesgo psicosocial (Guías I, II o III)",vig:"2 años / nuevo personal"},
+      {ref:"35.3",txt:"Informe de resultados de la evaluación de riesgos psicosociales",vig:"2 años"},
+      {ref:"35.4",txt:"Programa de acciones para prevenir y controlar factores de riesgo psicosocial",vig:"Anual"},
+      {ref:"35.5",txt:"Mecanismo confidencial de atención a quejas por violencia laboral (buzón, canal digital)",vig:"Revisión semanal"},
+      {ref:"35.6",txt:"Registro de casos de trabajadores con probable trastorno mental asociado al trabajo",vig:"Eventual"},
+      {ref:"35.7",txt:"Exámenes médicos y evaluaciones psicológicas al POE identificado",vig:"Eventual / indicación médica"},
+      {ref:"35.8",txt:"Capacitación, con evidencia DC3 — Factores de riesgo psicosocial y entorno organizacional",vig:"Anual"},
+    ]},
+    {id:"NOM-036",cod:"NOM-036-1-STPS-2018",nom:"Factores de riesgo ergonómico — Manejo manual de cargas",reqs:[
+      {ref:"36.1",txt:"Identificación y evaluación de factores de riesgo ergonómico por puesto con manejo manual de cargas",vig:"Anual"},
+      {ref:"36.2",txt:"Programa de intervención ergonómica (rediseño de puestos, auxiliares mecánicos, rotación)",vig:"Anual"},
+      {ref:"36.3",txt:"Procedimiento de manejo manual seguro de cargas (técnica correcta de levantamiento)",vig:"Anual"},
+      {ref:"36.4",txt:"Programa de vigilancia médica — trastornos musculoesqueléticos del POE expuesto",vig:"Anual"},
+      {ref:"36.5",txt:"Exámenes médicos del POE con manejo manual de cargas",vig:"Ingreso / Periódico"},
+      {ref:"36.6",txt:"Constancia de dotación de EPP y ayudas mecánicas para manejo de cargas",vig:"Cada dotación"},
+      {ref:"36.7",txt:"Capacitación, con evidencia DC3 — Ergonomía, manejo de cargas y prevención de TME",vig:"Anual"},
+    ]},
+  ]},
+  {cat:"Organización", noms:[
+    {id:"NOM-017",cod:"NOM-017-STPS-2008",nom:"Equipo de protección personal",reqs:[
+      {ref:"17.1",txt:"Estudio de determinación de EPP por puesto y actividad de trabajo",vig:"Anual"},
+      {ref:"17.2",txt:"Procedimiento de selección, compra, entrega, uso, mantenimiento y reposición de EPP",vig:"Anual"},
+      {ref:"17.3",txt:"Registro individual de entrega de EPP por trabajador (con firma de recepción)",vig:"Cada dotación"},
+      {ref:"17.4",txt:"Programa de inspección periódica del estado y uso correcto del EPP",vig:"Mensual"},
+      {ref:"17.5",txt:"Fichas técnicas de todos los EPP utilizados en el centro de trabajo",vig:"Anual"},
+      {ref:"17.6",txt:"Capacitación, con evidencia DC3 — Uso correcto, mantenimiento y limitaciones del EPP",vig:"Anual"},
+    ]},
+    {id:"NOM-018",cod:"NOM-018-STPS-2015",nom:"Comunicación de peligros y riesgos — sustancias químicas (GHS/SGA)",reqs:[
+      {ref:"18.1",txt:"Inventario de sustancias químicas peligrosas con HDS en formato GHS actualizado",vig:"Anual / nueva sustancia"},
+      {ref:"18.2",txt:"Procedimiento de comunicación de peligros químicos a los trabajadores (GHS/SGA)",vig:"Anual"},
+      {ref:"18.3",txt:"Verificación de que todos los recipientes y contenedores tengan etiqueta GHS correcta",vig:"Mensual"},
+      {ref:"18.4",txt:"Programa de actualización y revisión de HDS de todas las sustancias del inventario",vig:"Anual"},
+      {ref:"18.5",txt:"Capacitación, con evidencia DC3 — Sistema GHS, lectura de HDS y etiquetas de peligro",vig:"Anual"},
+    ]},
+    {id:"NOM-019",cod:"NOM-019-STPS-2011",nom:"Comisiones de seguridad e higiene",reqs:[
+      {ref:"19.1",txt:"Acta de integración o renovación de la Comisión de Seguridad e Higiene (STPS/SIREL)",vig:"Anual / nuevo integrante"},
+      {ref:"19.2",txt:"Programa anual de recorridos de verificación de la Comisión de SST",vig:"Anual"},
+      {ref:"19.3",txt:"Actas de recorridos de verificación de condiciones y actos inseguros",vig:"Trimestral"},
+      {ref:"19.4",txt:"Registro de seguimiento a medidas correctivas acordadas en recorridos",vig:"Trimestral"},
+      {ref:"19.5",txt:"Programa anual de capacitación en seguridad e higiene para trabajadores",vig:"Anual"},
+      {ref:"19.6",txt:"Registro de accidentes y enfermedades de trabajo (estadística interna)",vig:"Mensual"},
+      {ref:"19.7",txt:"Registro de investigación de accidentes e incidentes de trabajo (causa raíz)",vig:"Por evento"},
+      {ref:"19.8",txt:"Capacitación, con evidencia DC3 — Funciones y operación de la Comisión SST",vig:"Anual"},
+    ]},
+    {id:"NOM-026",cod:"NOM-026-STPS-2008",nom:"Colores y señales de seguridad",reqs:[
+      {ref:"26.1",txt:"Diagnóstico de señalización actual vs señalización requerida por áreas y riesgos",vig:"Anual"},
+      {ref:"26.2",txt:"Diseño y plano de señalización actualizado por área del centro de trabajo",vig:"Anual / cambios"},
+      {ref:"26.3",txt:"Listado de señales instaladas con verificación de cumplimiento con NOM-026",vig:"Semestral"},
+      {ref:"26.4",txt:"Procedimiento de identificación de fluidos en tuberías (colores y anillos de dirección)",vig:"Anual"},
+      {ref:"26.5",txt:"Capacitación, con evidencia DC3 — Interpretación de señales de seguridad y colores",vig:"Anual"},
+    ]},
+    {id:"NOM-030",cod:"NOM-030-STPS-2009",nom:"Servicios preventivos de seguridad y salud",reqs:[
+      {ref:"30.1",txt:"Diagnóstico de condiciones de seguridad y salud / Marco normativo aplicable",vig:"Anual"},
+      {ref:"30.2",txt:"Programa de Seguridad y Salud en el Trabajo (Promoción salud, Recorridos, Capacitación, Mantenimiento, Brigadas, Simulacros)",vig:"Semestre"},
+      {ref:"30.3",txt:"Informe de avance de cumplimiento del Programa de Seguridad y Salud en el Trabajo",vig:"Semestral"},
+      {ref:"30.4",txt:"Registro de actividades de promoción de salud realizadas (pláticas, carteles, campañas)",vig:"Continuo"},
+      {ref:"30.5",txt:"Capacitación, con evidencia DC3 — Marco normativo, programa SST y servicios preventivos",vig:"Anual"},
+    ]},
+  ]},
+];
+
+const ALL_NOMS = CATS.flatMap(function(c){ return c.noms; });
+
+var curS = 0;
+var selN = new Set();
+var resp = {};
+var nomObs = {};
+
+// INIT
+document.getElementById('e_fecha').value = new Date().toISOString().split('T')[0];
+buildGrid();
+checkOnline();
+setInterval(checkOnline, 8000);
+
+// ONLINE
+function checkOnline(){
+  var on = navigator.onLine;
+  document.getElementById('odot').className = 'online-dot' + (on?'':' off');
+  document.getElementById('olbl').textContent = on ? 'En línea' : 'Sin conexión';
+}
+
+// VALIDACIONES
+function validarEmpresa(){
+  var req = [
+    {id:'e_razon', lbl:'Razón social'},
+    {id:'e_rfc', lbl:'RFC'},
+    {id:'e_giro', lbl:'Giro o actividad'},
+    {id:'e_num', lbl:'No. de trabajadores'},
+    {id:'e_dom', lbl:'Domicilio'},
+    {id:'e_fecha', lbl:'Fecha del diagnóstico'},
+    {id:'e_resp_ct', lbl:'Responsable del CT'},
+    {id:'e_repr', lbl:'Representante legal'},
+    {id:'e_consultor', lbl:'Consultor SINTRA'},
+  ];
+  var faltantes = [];
+  req.forEach(function(r){
+    var el = document.getElementById(r.id);
+    if(!el || !el.value.trim()){
+      faltantes.push(r.lbl);
+      if(el) el.style.borderColor = '#A32D2D';
+    } else {
+      if(el) el.style.borderColor = '';
+    }
+  });
+  if(faltantes.length > 0){
+    mostrarError('⚠️ Faltan los siguientes campos obligatorios:<br>• ' + faltantes.join('<br>• '));
+    return false;
+  }
+  return true;
+}
+
+function validarNormas(){
+  if(selN.size === 0){
+    mostrarError('⚠️ Debes seleccionar al menos una norma antes de continuar.');
+    return false;
+  }
+  return true;
+}
+
+function validarEvaluacion(){
+  var faltantes = [];
+  CATS.forEach(function(cat){
+    cat.noms.filter(function(n){ return selN.has(n.id); }).forEach(function(nom){
+      var sinContestar = nom.reqs.filter(function(r){
+        return !resp[nom.id+'|'+r.ref] || !resp[nom.id+'|'+r.ref].r;
+      });
+      if(sinContestar.length > 0){
+        faltantes.push(nom.id + ': ' + sinContestar.length + ' aspecto(s) sin evaluar');
+      }
+    });
+  });
+  if(faltantes.length > 0){
+    mostrarError('⚠️ Los siguientes aspectos están incompletos:<br>• ' + faltantes.join('<br>• '));
+    return false;
+  }
+  return true;
+}
+
+function mostrarError(msg){
+  var div = document.getElementById('validMsg');
+  if(!div){
+    div = document.createElement('div');
+    div.id = 'validMsg';
+    div.style.cssText = 'position:fixed;top:60px;left:0;right:0;background:#FCEBEB;color:#A32D2D;border-bottom:2px solid #F09595;padding:12px 16px;font-size:13px;line-height:1.7;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.15)';
+    document.body.appendChild(div);
+  }
+  div.innerHTML = msg + '<span onclick="this.parentNode.style.display=\'none\'" style="float:right;cursor:pointer;font-size:18px;line-height:1;color:#A32D2D">✕</span>';
+  div.style.display = 'block';
+  window.scrollTo(0,0);
+  setTimeout(function(){ if(div) div.style.display='none'; }, 6000);
+}
+
+function ocultarError(){
+  var div = document.getElementById('validMsg');
+  if(div) div.style.display = 'none';
+}
+
+// NAV — con validación estricta
+function goTo(n){
+  // Validar antes de avanzar
+  if(n > curS){
+    if(curS === 0 && !validarEmpresa()) return;
+    if(curS === 1 && !validarNormas()) return;
+    if(curS === 2 && !validarEvaluacion()) return;
+  }
+  ocultarError();
+  ['s0','s1','s2','s3'].forEach(function(id,i){
+    document.getElementById(id).className = 'screen' + (i===n?' on':'');
+  });
+  ['tab0','tab1','tab2','tab3'].forEach(function(id,i){
+    document.getElementById(id).className = 'tab' + (i===n?' active':'');
+  });
+  curS = n;
+  if(n===2) buildChecklist();
+  if(n===3) buildResults();
+  updateSaveBar();
+  window.scrollTo(0,0);
+}
+
+// Wire tab bar
+document.getElementById('tab0').ontouchend = function(e){ e.preventDefault(); goTo(0); };
+document.getElementById('tab1').ontouchend = function(e){ e.preventDefault(); goTo(1); };
+document.getElementById('tab2').ontouchend = function(e){ e.preventDefault(); goTo(2); };
+document.getElementById('tab3').ontouchend = function(e){ e.preventDefault(); goTo(3); };
+document.getElementById('tab0').onclick = function(){ goTo(0); };
+document.getElementById('tab1').onclick = function(){ goTo(1); };
+document.getElementById('tab2').onclick = function(){ goTo(2); };
+document.getElementById('tab3').onclick = function(){ goTo(3); };
+
+document.getElementById('btnSheets').ontouchend = function(e){ e.preventDefault(); doSheets(); };
+document.getElementById('btnSheets').onclick = function(){ doSheets(); };
+document.getElementById('btnExcelBar').ontouchend = function(e){ e.preventDefault(); doExcel(); };
+document.getElementById('btnExcelBar').onclick = function(){ doExcel(); };
+document.getElementById('btnExcel').ontouchend = function(e){ e.preventDefault(); doExcel(); };
+document.getElementById('btnExcel').onclick = function(){ doExcel(); };
+document.getElementById('btnPrint').ontouchend = function(e){ e.preventDefault(); window.print(); };
+document.getElementById('btnPrint').onclick = function(){ window.print(); };
+document.getElementById('btnNuevo').ontouchend = function(e){ e.preventDefault(); doNuevo(); };
+document.getElementById('btnNuevo').onclick = function(){ doNuevo(); };
+
+// SAVE BAR
+function updateSaveBar(){
+  var emp = document.getElementById('e_razon').value || 'Sin nombre';
+  var fecha = document.getElementById('e_fecha').value || '';
+  document.getElementById('sbEmp').textContent = emp + (fecha ? ' · ' + fecha : '');
+  var total = ALL_NOMS.filter(function(n){ return selN.has(n.id); })
+    .reduce(function(a,n){ return a+n.reqs.length; },0);
+  var done = Object.values(resp).filter(function(v){ return v && v.r; }).length;
+  document.getElementById('sbSt').textContent = total>0 ? done+' de '+total+' aspectos evaluados' : 'Selecciona normas para comenzar';
+}
+
+// NORMAS GRID
+function buildGrid(){
+  var c = document.getElementById('normasGrid');
+  var html = '';
+  CATS.forEach(function(cat){
+    var icon = cat.cat==='Seguridad'?'🔒':cat.cat==='Salud'?'⚕️':'📋';
+    html += '<div class="cat-t">'+icon+' Normas de '+cat.cat+'</div><div class="ng">';
+    cat.noms.forEach(function(nom){
+      var on = selN.has(nom.id);
+      html += '<div class="ntog'+(on?' on':'')+'" id="nt-'+nom.id+'">'
+        +'<div class="nchk">'+(on?'✓':'')+'</div>'
+        +'<div class="ntog-l"><b>'+nom.id+'</b><span>'+nom.nom+'</span>'
+        +'<span class="nc">'+nom.reqs.length+' aspectos</span></div>'
+        +'</div>';
+    });
+    html += '</div>';
+  });
+  c.innerHTML = html;
+  // Wire cada toggle con ontouchend y onclick
+  ALL_NOMS.forEach(function(nom){
+    var el = document.getElementById('nt-'+nom.id);
+    if(!el) return;
+    el.ontouchend = function(e){ e.preventDefault(); toggleNom(nom.id); };
+    el.onclick = function(){ toggleNom(nom.id); };
+  });
+}
+
+function toggleNom(id){
+  if(selN.has(id)) selN.delete(id); else selN.add(id);
+  var on = selN.has(id);
+  var el = document.getElementById('nt-'+id);
+  if(el){
+    el.className = 'ntog'+(on?' on':'');
+    el.querySelector('.nchk').textContent = on?'✓':'';
+  }
+  updateSaveBar();
+}
+
+// CHECKLIST
+function buildChecklist(){
+  var html = '';
+  CATS.forEach(function(cat){
+    var cns = cat.noms.filter(function(n){ return selN.has(n.id); });
+    if(!cns.length) return;
+    cns.forEach(function(nom){
+      var done = nom.reqs.filter(function(r){ return resp[nom.id+'|'+r.ref] && resp[nom.id+'|'+r.ref].r; }).length;
+      var tot = nom.reqs.length;
+      var bc = done===0?'warn':done===tot?'ok':'part';
+      var bt = done===0?'Pendiente':done===tot?'Completo':done+'/'+tot;
+      var no = nomObs[nom.id]||{};
+      html += '<div class="rn-blk" id="rn-'+nom.id+'">'
+        +'<div class="rn-hdr" id="rnh-'+nom.id+'">'
+        +'<div><div class="rn-hdr-t">'+nom.id+' — '+nom.nom+'</div>'
+        +'<div class="rn-hdr-s">'+nom.cod+' · '+tot+' aspectos</div></div>'
+        +'<span class="bdg '+bc+'" id="bdg-'+nom.id+'">'+bt+'</span>'
+        +'</div>'
+        +'<div id="rnb-'+nom.id+'">';
+      nom.reqs.forEach(function(r,i){
+        var key = nom.id+'|'+r.ref;
+        var cur = resp[key]||{};
+        var sel = cur.r||'';
+        html += '<div class="rrow'+(i%2?' shade':'')+'">'
+          +'<div class="rrow-top">'
+          +'<span class="rref">'+r.ref+'</span>'
+          +'<span class="rtxt">'+r.txt+'</span>'
+          +'<span class="rvig">'+r.vig+'</span>'
+          +'</div>'
+          +'<div class="rbg">'
+          +'<span class="rb'+(sel==='SI'?' si-on':'')+'" id="rb-SI-'+key+'">SI</span>'
+          +'<span class="rb'+(sel==='PARCIAL'?' par-on':'')+'" id="rb-PARCIAL-'+key+'">PARCIAL</span>'
+          +'<span class="rb'+(sel==='NO'?' no-on':'')+'" id="rb-NO-'+key+'">NO</span>'
+          +'<span class="rb'+(sel==='NA'?' na-on':'')+'" id="rb-NA-'+key+'">NA</span>'
+          +'</div>'
+          +'<div class="campos-wrap">'
+          +'<div class="campo-grp"><div class="campo-lbl ev">Evidencias documentales</div>'
+          +'<textarea class="campo-ta ev-f" id="ev-'+key+'" placeholder="Documentos que presenta o le faltan...">'+(cur.ev||'')+'</textarea></div>'
+          +'<div class="campo-grp"><div class="campo-lbl obs">Observaciones</div>'
+          +'<textarea class="campo-ta" id="obs-'+key+'" placeholder="Notas del consultor...">'+(cur.obs||'')+'</textarea></div>'
+          +'<div class="campo-grp"><div class="campo-lbl med">Medidas de control</div>'
+          +'<textarea class="campo-ta med-f" id="med-'+key+'" placeholder="Acciones para dar cumplimiento...">'+(cur.med||'')+'</textarea></div>'
+          +'</div>'
+          +'</div>';
+      });
+      // Obs generales de la norma
+      html += '<div class="nom-obs-wrap">'
+        +'<div class="nom-obs-title">📋 Observaciones generales — '+nom.id+'</div>'
+        +'<div class="nom-obs-grid">'
+        +'<div class="nom-obs-grp"><div class="nom-obs-lbl">Observaciones generales de la norma</div>'
+        +'<textarea class="nom-obs-ta" id="ngen-'+nom.id+'" placeholder="Estado general de cumplimiento, hallazgos relevantes...">'+(no.gen||'')+'</textarea></div>'
+        +'<div class="nom-obs-grp"><div class="nom-obs-lbl piso">Observaciones de levantamiento en piso</div>'
+        +'<textarea class="nom-obs-ta piso-f" id="npiso-'+nom.id+'" placeholder="Lo observado físicamente durante el recorrido en campo...">'+(no.piso||'')+'</textarea></div>'
+        +'</div></div>'
+        +'</div></div>';
+    });
+  });
+  if(!html) html = '<p style="color:var(--muted);padding:16px;text-align:center">No hay normas seleccionadas.<br>Ve a la pestaña <b>Normas</b> y selecciona las que aplican.</p>';
+  document.getElementById('reqArea').innerHTML = html;
+
+  // Wire con ontouchend + onclick
+  ALL_NOMS.filter(function(n){ return selN.has(n.id); }).forEach(function(nom){
+    var hdr = document.getElementById('rnh-'+nom.id);
+    if(hdr){
+      hdr.ontouchend = function(e){ e.preventDefault(); toggleBlock(nom.id); };
+      hdr.onclick = function(){ toggleBlock(nom.id); };
+    }
+    nom.reqs.forEach(function(r){
+      var key = nom.id+'|'+r.ref;
+      ['SI','PARCIAL','NO','NA'].forEach(function(v){
+        var el = document.getElementById('rb-'+v+'-'+key);
+        if(el){
+          el.ontouchend = function(e){ e.preventDefault(); setR(nom.id,r.ref,v); };
+          el.onclick = function(){ setR(nom.id,r.ref,v); };
+        }
+      });
+      var evEl = document.getElementById('ev-'+key);
+      if(evEl) evEl.oninput = function(){ setField(nom.id,r.ref,'ev',this.value); };
+      var obsEl = document.getElementById('obs-'+key);
+      if(obsEl) obsEl.oninput = function(){ setField(nom.id,r.ref,'obs',this.value); };
+      var medEl = document.getElementById('med-'+key);
+      if(medEl) medEl.oninput = function(){ setField(nom.id,r.ref,'med',this.value); };
+    });
+    var ngenEl = document.getElementById('ngen-'+nom.id);
+    if(ngenEl) ngenEl.oninput = function(){ setNomObs(nom.id,'gen',this.value); };
+    var npisoEl = document.getElementById('npiso-'+nom.id);
+    if(npisoEl) npisoEl.oninput = function(){ setNomObs(nom.id,'piso',this.value); };
+  });
+}
+
+function toggleBlock(nomId){
+  var b = document.getElementById('rnb-'+nomId);
+  if(b) b.style.display = b.style.display==='none'?'':'none';
+}
+
+function setR(nomId,ref,val){
+  var key = nomId+'|'+ref;
+  if(!resp[key]) resp[key]={};
+  resp[key].r = val;
+  ['SI','PARCIAL','NO','NA'].forEach(function(v){
+    var el = document.getElementById('rb-'+v+'-'+key);
+    if(!el) return;
+    var cls = 'rb';
+    if(v===val) cls += v==='SI'?' si-on':v==='PARCIAL'?' par-on':v==='NO'?' no-on':' na-on';
+    el.className = cls;
+  });
+  updateBadge(nomId);
+  updateSaveBar();
+}
+
+function setField(nomId,ref,field,val){
+  var key = nomId+'|'+ref;
+  if(!resp[key]) resp[key]={};
+  resp[key][field] = val;
+}
+
+function setNomObs(nomId,field,val){
+  if(!nomObs[nomId]) nomObs[nomId]={};
+  nomObs[nomId][field] = val;
+}
+
+function updateBadge(nomId){
+  var nom = ALL_NOMS.find(function(n){ return n.id===nomId; });
+  if(!nom) return;
+  var done = nom.reqs.filter(function(r){ return resp[nomId+'|'+r.ref]&&resp[nomId+'|'+r.ref].r; }).length;
+  var tot = nom.reqs.length;
+  var bdg = document.getElementById('bdg-'+nomId); if(!bdg) return;
+  bdg.className = 'bdg '+(done===0?'warn':done===tot?'ok':'part');
+  bdg.textContent = done===0?'Pendiente':done===tot?'Completo':done+'/'+tot;
+}
+
+// RESULTS
+function buildResults(){
+  var active = ALL_NOMS.filter(function(n){ return selN.has(n.id); });
+  var tSI=0,tPAR=0,tNO=0,tNA=0;
+  var stats = active.map(function(nom){
+    var si=0,par=0,no=0,na=0;
+    nom.reqs.forEach(function(r){
+      var v=(resp[nom.id+'|'+r.ref]||{}).r||'';
+      if(v==='SI')si++;else if(v==='PARCIAL')par++;else if(v==='NO')no++;else if(v==='NA')na++;
+    });
+    var ev=si+par+no;
+    var pct=ev>0?Math.round(((si+par*0.5)/ev)*100):0;
+    tSI+=si;tPAR+=par;tNO+=no;tNA+=na;
+    return {nom:nom,si:si,par:par,no:no,na:na,ev:ev,pct:pct};
+  });
+  var tEv=tSI+tPAR+tNO;
+  var tPct=tEv>0?Math.round(((tSI+tPAR*0.5)/tEv)*100):0;
+  var html = '<div class="res-top">'
+    +'<div><div class="res-pct">'+tPct+'%</div>'
+    +'<div class="res-info"><b>CUMPLIMIENTO GLOBAL</b>'+(document.getElementById('e_razon').value||'—')+' · '+(document.getElementById('e_fecha').value||'')+'</div></div>'
+    +'<div class="pills">'
+    +'<div class="pill si"><div class="pv">'+tSI+'</div><div class="pl">SI</div></div>'
+    +'<div class="pill par"><div class="pv">'+tPAR+'</div><div class="pl">PARCIAL</div></div>'
+    +'<div class="pill no"><div class="pv">'+tNO+'</div><div class="pl">NO</div></div>'
+    +'<div class="pill na"><div class="pv">'+tNA+'</div><div class="pl">NA</div></div>'
+    +'</div></div>';
+  CATS.forEach(function(cat){
+    var cs=stats.filter(function(s){ return cat.noms.some(function(n){ return n.id===s.nom.id; }); });
+    if(!cs.length) return;
+    var icon=cat.cat==='Seguridad'?'🔒':cat.cat==='Salud'?'⚕️':'📋';
+    html+='<div class="grp-t">'+icon+' Normas de '+cat.cat+'</div>'
+      +'<table class="rt"><thead><tr><th class="tl">NOM</th><th class="tl">Nombre</th>'
+      +'<th>SI</th><th>PARC.</th><th>NO</th><th>NA</th><th>%</th></tr></thead><tbody>';
+    cs.forEach(function(s){
+      var c=s.pct>=80?'var(--green)':s.pct>=50?'var(--amb)':'var(--red)';
+      html+='<tr><td style="font-family:monospace;font-size:10px;font-weight:600">'+s.nom.id+'</td>'
+        +'<td style="font-size:11px;color:var(--mid)">'+s.nom.nom+'</td>'
+        +'<td class="tc" style="color:var(--green);font-weight:600">'+s.si+'</td>'
+        +'<td class="tc" style="color:var(--amb);font-weight:600">'+s.par+'</td>'
+        +'<td class="tc" style="color:var(--red);font-weight:600">'+s.no+'</td>'
+        +'<td class="tc" style="color:var(--muted)">'+s.na+'</td>'
+        +'<td class="tpct" style="color:'+c+'">'+s.pct+'%</td></tr>';
+    });
+    var cSI=cs.reduce(function(a,s){return a+s.si;},0),cPAR=cs.reduce(function(a,s){return a+s.par;},0);
+    var cNO=cs.reduce(function(a,s){return a+s.no;},0),cNA=cs.reduce(function(a,s){return a+s.na;},0);
+    var cEv=cSI+cPAR+cNO,cPct=cEv>0?Math.round(((cSI+cPAR*0.5)/cEv)*100):0;
+    html+='<tr class="trow-tot"><td colspan="2">Total '+cat.cat+'</td>'
+      +'<td class="tc">'+cSI+'</td><td class="tc">'+cPAR+'</td>'
+      +'<td class="tc">'+cNO+'</td><td class="tc">'+cNA+'</td>'
+      +'<td class="tpct">'+cPct+'%</td></tr></tbody></table>';
+  });
+  var pending=[];
+  stats.forEach(function(s){
+    s.nom.reqs.forEach(function(r){
+      var v=resp[s.nom.id+'|'+r.ref];
+      if(v&&(v.r==='NO'||v.r==='PARCIAL')) pending.push({nom:s.nom.id,txt:r.txt,res:v.r,ev:v.ev||'',obs:v.obs||'',med:v.med||''});
+    });
+  });
+  if(pending.length){
+    html+='<div class="grp-t">⚠️ Medidas de control requeridas ('+pending.length+')</div>';
+    pending.forEach(function(p){
+      var c=p.res==='NO'?'var(--red)':'var(--amb)';
+      html+='<div class="ac-r">'
+        +'<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:4px">'
+        +'<span style="font-size:10px;font-weight:700;font-family:monospace;color:'+c+';flex-shrink:0">'+p.nom+'</span>'
+        +'<span style="font-size:12px;flex:1">'+p.txt+'</span>'
+        +'<span style="font-size:10px;font-weight:700;color:'+c+';white-space:nowrap">'+p.res+'</span>'
+        +'</div>'
+        +(p.ev?'<div style="font-size:11px;color:var(--blue);margin-bottom:2px">📄 '+p.ev+'</div>':'')
+        +(p.obs?'<div style="font-size:11px;color:var(--mid);margin-bottom:2px">📝 '+p.obs+'</div>':'')
+        +(p.med?'<div style="font-size:11px;color:var(--amb)">→ '+p.med+'</div>':'')
+        +'</div>';
+    });
+  }
+  document.getElementById('resArea').innerHTML = html;
+}
+
+// EXCEL
+function doExcel(){
+  if(!window.XLSX){ alert('Librería Excel no cargó. Necesitas internet la primera vez.'); return; }
+  var empresa=document.getElementById('e_razon').value||'SinNombre';
+  var fecha=document.getElementById('e_fecha').value||new Date().toISOString().split('T')[0];
+  var active=ALL_NOMS.filter(function(n){ return selN.has(n.id); });
+  var wb=XLSX.utils.book_new();
+  var rows=[['SINTRA Consultoría — Marco Normativo NOM-030-STPS-2009'],[''],
+    ['Empresa:',document.getElementById('e_razon').value,'Fecha:',fecha],
+    ['RFC:',document.getElementById('e_rfc').value,'Consultor:',document.getElementById('e_consultor').value],
+    ['Observaciones:',document.getElementById('e_obs').value],[''],
+    ['NOM','Código','Nombre','Total','SI','PARCIAL','NO','NA','%','Semáforo']];
+  active.forEach(function(nom){
+    var si=0,par=0,no=0,na=0;
+    nom.reqs.forEach(function(r){var v=(resp[nom.id+'|'+r.ref]||{}).r||'';if(v==='SI')si++;else if(v==='PARCIAL')par++;else if(v==='NO')no++;else if(v==='NA')na++;});
+    var ev=si+par+no,pct=ev>0?Math.round(((si+par*0.5)/ev)*100):0;
+    rows.push([nom.id,nom.cod,nom.nom,nom.reqs.length,si,par,no,na,pct+'%',pct>=80?'ALTO':pct>=50?'MEDIO':'BAJO']);
+  });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),'Resumen');
+  var det=[['NOM','Código','Categoría','Aspecto','Vigencia','Resultado','Evidencias documentales','Observaciones','Medidas de control']];
+  CATS.forEach(function(cat){
+    cat.noms.filter(function(n){ return selN.has(n.id); }).forEach(function(nom){
+      nom.reqs.forEach(function(r){
+        var v=resp[nom.id+'|'+r.ref]||{};
+        var res=v.r==='PARCIAL'?'PARCIALMENTE':(v.r||'Sin evaluar');
+        det.push([nom.id,nom.cod,cat.cat,r.txt,r.vig,res,v.ev||'',v.obs||'',v.med||'']);
+      });
+      var no=nomObs[nom.id]||{};
+      if(no.gen||no.piso){
+        det.push(['','','','— Obs. '+nom.id+' —','','','','','']);
+        if(no.gen) det.push(['','','','Obs. generales:','','',no.gen,'','']);
+        if(no.piso) det.push(['','','','Obs. en piso:','','',no.piso,'','']);
+      }
+    });
+  });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(det),'Detalle');
+  XLSX.writeFile(wb,'MarcoNormativo_'+empresa+'_'+fecha+'.xlsx');
+}
+
+// SHEETS
+async function doSheets(){
+  if(!navigator.onLine){ showSt('err','Sin conexión. Descarga el Excel primero.'); return; }
+  var btn=document.getElementById('btnSheets'); btn.textContent='⏳...';
+  showSt('loading','Enviando a Google Sheets...');
+  var active=ALL_NOMS.filter(function(n){ return selN.has(n.id); });
+  var empresa={
+    e_razon:document.getElementById('e_razon').value,
+    e_rfc:document.getElementById('e_rfc').value,
+    e_regpat:document.getElementById('e_regpat').value,
+    e_giro:document.getElementById('e_giro').value,
+    e_num:document.getElementById('e_num').value,
+    e_dom:document.getElementById('e_dom').value,
+    e_tel:document.getElementById('e_tel').value,
+    e_turnos:document.getElementById('e_turnos').value,
+    e_fecha:document.getElementById('e_fecha').value,
+    e_resp_ct:document.getElementById('e_resp_ct').value,
+    e_resp_sh:document.getElementById('e_resp_sh').value,
+    e_repr:document.getElementById('e_repr').value,
+    e_consultor:document.getElementById('e_consultor').value,
+    e_obs:document.getElementById('e_obs').value,
+  };
+  var nomsData=active.map(function(nom){
+    return {id:nom.id,cod:nom.cod,nom:nom.nom,reqs:nom.reqs.map(function(r){return {ref:r.ref,txt:r.txt,vig:r.vig};})};
+  });
+  try{
+    await fetch(APPS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'guardarMarcoNormativo',empresa:empresa,requisitos:resp,nomObs:nomObs,noms:nomsData})});
+    showSt('ok','✅ Enviado a Google Sheets — pestaña NOM030_Corto y MAESTRO');
+    btn.textContent='✅ Guardado';
+  }catch(err){
+    showSt('err','❌ Error de red. Descarga el Excel como respaldo.');
+    btn.textContent='☁ Sheets';
+  }
+}
+
+// NUEVO
+function doNuevo(){
+  if(Object.keys(resp).length>0&&!confirm('¿Nuevo diagnóstico? Se perderán los datos actuales.')) return;
+  ['e_razon','e_rfc','e_regpat','e_giro','e_num','e_dom','e_tel','e_turnos','e_resp_ct','e_resp_sh','e_repr','e_consultor','e_obs'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('e_fecha').value=new Date().toISOString().split('T')[0];
+  selN=new Set(); resp={}; nomObs={};
+  buildGrid();
+  goTo(0);
+  document.getElementById('shSt').className='sh-st';
+  document.getElementById('btnSheets').textContent='☁ Sheets';
+}
+
+function showSt(type,msg){ var el=document.getElementById('shSt'); el.className='sh-st on '+type; el.innerHTML=msg; }
+</script>
+</body>
+</html>
